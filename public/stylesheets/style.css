@@ -3,6 +3,17 @@ body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
+#c {
+  width:  80%;
+  height: 80%;
+  border: 1px solid #000000;
+}
+
+.square {
+  height: 50px;
+  width: 50px;
+}
+
 a {
   color: #00B7FF;
 }
