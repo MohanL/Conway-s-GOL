@@ -32,16 +32,28 @@ server.on('listening', onListening);
 io.on('connection', function (socket) {
   console.log('a user connected');
   storeUserInfo(socket);
+
+  console.log(app.users);
+
   socket.on('disconnect', () => {
     console.log(`${socket.id} user disconnected`);
     delete app.users[socket.id.toString()];
   });
+
+  socket.on('registerPoint', (point2D) => {
+    const x = Math.floor(point2D.x / 8);
+    const y = Math.floor(point2D.y / 8);
+    console.log(`registerPoint : ${x}, ${y}`);
+    app.pattern[x][y] = socket.id.toString();
+    io.emit('updateCanvas', { data: app.pattern, others: app.users });
+  });
 });
 
 setInterval(() => {
-  io.emit('updateCanvas', app.pattern);
+  io.emit('updateCanvas', { data: app.pattern, others: app.users });
   update();
 }, 1000);
+
 
 /**
  * Normalize a port into a number, string, or false.
@@ -116,19 +128,37 @@ function update() {
    */
   function _countNeighbours(x, y) {
     var amount = 0;
-
+    // another function to do this
+    var colorSum = 0;
     function _isFilled(x, y) {
       return cells[x] && cells[x][y];
     }
 
-    if (_isFilled(x - 1, y - 1)) amount++;
-    if (_isFilled(x, y - 1)) amount++;
-    if (_isFilled(x + 1, y - 1)) amount++;
-    if (_isFilled(x - 1, y)) amount++;
-    if (_isFilled(x + 1, y)) amount++;
-    if (_isFilled(x - 1, y + 1)) amount++;
-    if (_isFilled(x, y + 1)) amount++;
-    if (_isFilled(x + 1, y + 1)) amount++;
+    if (_isFilled(x - 1, y - 1)) {
+      // TODO: add average color
+      amount++;
+    }
+    if (_isFilled(x, y - 1)) {
+      amount++;
+    }
+    if (_isFilled(x + 1, y - 1)) {
+      amount++;
+    }
+    if (_isFilled(x - 1, y)) {
+      amount++;
+    }
+    if (_isFilled(x + 1, y)) {
+      amount++;
+    }
+    if (_isFilled(x - 1, y + 1)){
+      amount++;
+    }
+    if (_isFilled(x, y + 1)){
+      amount++;
+    }
+    if (_isFilled(x + 1, y + 1)){
+      amount++;
+    }
 
     return amount;
   }
@@ -139,27 +169,30 @@ function update() {
       var alive = 0,
         count = _countNeighbours(x, y);
 
-      if (cell > 0) {
+      if (cell) {
         alive = count === 2 || count === 3 ? 1 : 0;
       } else {
         alive = count === 3 ? 1 : 0;
       }
-
-      result[x][y] = alive;
+      if (alive) {
+        // TODO: replace 1 with averageColor
+        result[x][y] = cell || 1;
+      }
+      else
+        result[x][y] = 0;
     });
   });
 
   app.pattern = result;
 }
 
-function storeUserInfo(socket){
+function storeUserInfo(socket) {
   const color = randcolor();
   socket.emit('yourColor', color);
-  console.log(color);
-  app.users[socket.id.toString()] = color;
-  console.log(app.users);
+  let id = socket.id.toString().trim();
+  app.users[id] = color;
 }
 
-function randcolor(){
+function randcolor() {
   return '#' + (Math.random() * 0xFFFFFF << 0).toString(16);
 }

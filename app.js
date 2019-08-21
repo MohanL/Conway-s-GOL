@@ -48,6 +48,7 @@ function init() {
     }
   }
 
+  // patttern 1
   // Prefilled cells
   [
     // Gosper glider gun
@@ -64,6 +65,16 @@ function init() {
     .forEach(function (point) {
       cells[point[0]][point[1]] = 1;
     });
+
+  // // patttern 2
+  // // Prefilled cells
+  // [
+  //   // Gosper glider gun
+  //   [1, 1]
+  // ]
+  //   .forEach(function (point) {
+  //     cells[point[0]][point[1]] = 1;
+  //   });
 
   return cells;
 }
