@@ -27,7 +27,7 @@
 
     var canvasElement = document.getElementById('c');
     var canvas = canvasElement.getContext('2d');
-    canvas.strokeStyle = '#e1e1e1';
+    canvas.strokeStyle = '#ddd';
     canvas.fillStyle = 'cadetblue';
     elemLeft = canvasElement.offsetLeft,
       elemTop = canvasElement.offsetTop,
@@ -71,21 +71,21 @@
 
     // // Render elements.
     // elements.forEach(function (element) {
-    //   context.fillStyle = element.colour;
-    //   context.fillRect(element.left, element.top, element.width, element.height);
+    //   canvas.fillStyle = element.colour;
+    //   canvas.fillRect(element.left, element.top, element.width, element.height);
     // });​
 
     /**
      * Draw cells on canvas
      */
     function draw() {
-      canvas.clearRect(0, 0, 1512, 512);
+      canvas.clearRect(0, 0, 900, 600);
+
       cells.forEach(function (row, x) {
         row.forEach(function (cell, y) {
           canvas.beginPath();
-          canvas.rect(x * 8, y * 8, 8, 8);
+          canvas.rect(x * 10, y * 10, 10, 10);
           if (cell) {
-            console.log(`cell ${cell}`);
             if (cell == 1)
               canvas.fill();
             else {
@@ -98,6 +98,7 @@
           }
         });
       });
+
       // setTimeout(function () { update(); }, 70);
       //window.requestAnimationFrame(update); // Too fast!
     }

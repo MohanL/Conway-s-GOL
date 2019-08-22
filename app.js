@@ -41,9 +41,9 @@ app.use(function(err, req, res, next) {
 
 function init() {
   let cells = [];
-  for (var i = 0; i < 64; i++) {
+  for (var i = 0; i < 90; i++) {
     cells[i] = [];
-    for (var j = 0; j < 64; j++) {
+    for (var j = 0; j < 60; j++) {
       cells[i][j] = 0;
     }
   }
@@ -65,16 +65,6 @@ function init() {
     .forEach(function (point) {
       cells[point[0]][point[1]] = 1;
     });
-
-  // // patttern 2
-  // // Prefilled cells
-  // [
-  //   // Gosper glider gun
-  //   [1, 1]
-  // ]
-  //   .forEach(function (point) {
-  //     cells[point[0]][point[1]] = 1;
-  //   });
 
   return cells;
 }
