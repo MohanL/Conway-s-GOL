@@ -89,7 +89,7 @@
             if (cell == 1)
               canvas.fill();
             else {
-              canvas.fillStyle = others[cell];
+              canvas.fillStyle = cell;
               canvas.fill();
               canvas.fillStyle = 'cadetblue';
             }

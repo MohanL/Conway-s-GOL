@@ -32,19 +32,16 @@ server.on('listening', onListening);
 io.on('connection', function (socket) {
   console.log('a user connected');
   storeUserInfo(socket);
-
-  console.log(app.users);
-
   socket.on('disconnect', () => {
     console.log(`${socket.id} user disconnected`);
     delete app.users[socket.id.toString()];
   });
 
   socket.on('registerPoint', (point2D) => {
-    const x = Math.floor(point2D.x / 8);
-    const y = Math.floor(point2D.y / 8);
+    const x = Math.floor(point2D.x / 10);
+    const y = Math.floor(point2D.y / 10);
     console.log(`registerPoint : ${x}, ${y}`);
-    app.pattern[x][y] = socket.id.toString();
+    app.pattern[x][y] = app.users[socket.id.toString()];
     io.emit('updateCanvas', { data: app.pattern, others: app.users });
   });
 });
@@ -121,6 +118,15 @@ function onListening() {
   */
 function update() {
 
+  // npc color 95, 158, 160
+  const R2 = Math.pow(95, 2);
+  const G2 = Math.pow(158, 2);
+  const B2 = Math.pow(160, 2);
+
+  let colorRSum;
+  let colorGSum;
+  let colorBSum;
+
   var result = [];
   var cells = app.pattern;
   /**
@@ -129,34 +135,124 @@ function update() {
   function _countNeighbours(x, y) {
     var amount = 0;
     // another function to do this
-    var colorSum = 0;
+    colorRSum = 0;
+    colorGSum = 0;
+    colorBSum = 0;
+
     function _isFilled(x, y) {
       return cells[x] && cells[x][y];
     }
 
     if (_isFilled(x - 1, y - 1)) {
-      // TODO: add average color
+      if (cells[x - 1][y - 1] === 1) {
+        colorRSum += R2;
+        colorGSum += G2;
+        colorBSum += B2;
+      } else {
+        let cellR, cellG, cellB;
+        [cellR, cellG, cellB] = hexToRgb(cells[x - 1][y - 1]);
+        colorRSum += Math.pow(cellR, 2);
+        colorGSum += Math.pow(cellG, 2);
+        colorBSum += Math.pow(cellB, 2);
+      }
       amount++;
     }
     if (_isFilled(x, y - 1)) {
+      if (cells[x][y - 1] === 1) {
+        colorRSum += R2;
+        colorGSum += G2;
+        colorBSum += B2;
+      } else {
+        let cellR, cellG, cellB;
+        [cellR, cellG, cellB] = hexToRgb(cells[x][y - 1]);
+        colorRSum += Math.pow(cellR, 2);
+        colorGSum += Math.pow(cellG, 2);
+        colorBSum += Math.pow(cellB, 2);
+      }
       amount++;
     }
     if (_isFilled(x + 1, y - 1)) {
+      if (cells[x + 1][y - 1] === 1) {
+        colorRSum += R2;
+        colorGSum += G2;
+        colorBSum += B2;
+      } else {
+        let cellR, cellG, cellB;
+        [cellR, cellG, cellB] = hexToRgb(cells[x + 1][y - 1]);
+        colorRSum += Math.pow(cellR, 2);
+        colorGSum += Math.pow(cellG, 2);
+        colorBSum += Math.pow(cellB, 2);
+      }
       amount++;
     }
     if (_isFilled(x - 1, y)) {
+      if (cells[x - 1][y] === 1) {
+        colorRSum += R2;
+        colorGSum += G2;
+        colorBSum += B2;
+      } else {
+        let cellR, cellG, cellB;
+        [cellR, cellG, cellB] = hexToRgb(cells[x - 1][y]);
+        colorRSum += Math.pow(cellR, 2);
+        colorGSum += Math.pow(cellG, 2);
+        colorBSum += Math.pow(cellB, 2);
+      }
       amount++;
     }
     if (_isFilled(x + 1, y)) {
+      if (cells[x + 1][y] === 1) {
+        colorRSum += R2;
+        colorGSum += G2;
+        colorBSum += B2;
+      } else {
+        let cellR, cellG, cellB;
+        [cellR, cellG, cellB] = hexToRgb(cells[x + 1][y]);
+        colorRSum += Math.pow(cellR, 2);
+        colorGSum += Math.pow(cellG, 2);
+        colorBSum += Math.pow(cellB, 2);
+      }
       amount++;
     }
-    if (_isFilled(x - 1, y + 1)){
+    if (_isFilled(x - 1, y + 1)) {
+      if (cells[x - 1][y + 1] === 1) {
+        colorRSum += R2;
+        colorGSum += G2;
+        colorBSum += B2;
+      } else {
+        let cellR, cellG, cellB;
+        [cellR, cellG, cellB] = hexToRgb(cells[x - 1][y + 1]);
+        colorRSum += Math.pow(cellR, 2);
+        colorGSum += Math.pow(cellG, 2);
+        colorBSum += Math.pow(cellB, 2);
+      }
       amount++;
     }
-    if (_isFilled(x, y + 1)){
+    if (_isFilled(x, y + 1)) {
+      if (cells[x][y + 1] === 1) {
+        colorRSum += R2;
+        colorGSum += G2;
+        colorBSum += B2;
+      } else {
+        let cellR, cellG, cellB;
+        [cellR, cellG, cellB] = hexToRgb(cells[x][y + 1]);
+        colorRSum += Math.pow(cellR, 2);
+        colorGSum += Math.pow(cellG, 2);
+        colorBSum += Math.pow(cellB, 2);
+      }
       amount++;
     }
-    if (_isFilled(x + 1, y + 1)){
+    if (_isFilled(x + 1, y + 1)) {
+      if (cells[x + 1][y + 1] === 1) {
+        colorRSum += R2;
+        colorGSum += G2;
+        colorBSum += B2;
+      } else {
+        let cellR, cellG, cellB;
+        [cellR, cellG, cellB] = hexToRgb(cells[x + 1][y + 1]);
+        colorRSum += Math.pow(cellR, 2);
+        colorGSum += Math.pow(cellG, 2);
+        colorBSum += Math.pow(cellB, 2);
+      }
       amount++;
     }
 
@@ -175,8 +271,12 @@ function update() {
         alive = count === 3 ? 1 : 0;
       }
       if (alive) {
-        // TODO: replace 1 with averageColor
-        result[x][y] = cell || 1;
+        if(cell){
+          result[x][y] = cell;
+        }else{
+          const newCol = rgbToHex(Math.sqrt(colorRSum / count), Math.sqrt(colorGSum / count), Math.sqrt(colorBSum / count));
+          result[x][y] = newCol;
+        }
       }
       else
         result[x][y] = 0;
@@ -196,3 +296,32 @@ function storeUserInfo(socket) {
 function randcolor() {
   return '#' + (Math.random() * 0xFFFFFF << 0).toString(16);
 }
+
+function componentToHex(c) {
+  var hex = c.toString(16);
+  return hex.length == 1 ? "0" + hex : hex;
+}
+
+// rgbToHex(0, 51, 255) => #0033ff
+function rgbToHex(r, g, b) {
+  return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+}
+
+function hexToRgb(hex) {
+  // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
+  var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+  hex = hex.replace(shorthandRegex, function (m, r, g, b) {
+    return r + r + g + g + b + b;
+  });
+
+  var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  // console.log(`${hex}, ${result}`);
+  return result ? [
+    parseInt(result[1], 16),
+    parseInt(result[2], 16),
+    parseInt(result[3], 16)
+  ] : null;
+}
+
+// hexToRgb("#0033ff").g => 51
+// hexToRgb("#03f").g => 51
