@@ -1,0 +1,7 @@
+--recursive
+--full-trace
+--bail
+--exit
+
+test/**/*.js
+
