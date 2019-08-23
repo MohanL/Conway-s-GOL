@@ -1,2 +1,6 @@
-- [ ] predefined patterns, 1 h
-- [x] CI github heroku
+- [x] conway's algo
+- [x] user input
+- [x] predefined patterns
+- [x] average color
+- [x] heroku pipelin
+- [ ] proper tests
