@@ -12,16 +12,13 @@
     let others = {};
 
     socket.on('updateCanvas', function (updateCanvas) {
-      console.log('client receive updateCanvas');
       cells = updateCanvas.data;
       others = updateCanvas.others;
       draw();
     });
 
     socket.on('yourColor', function (color) {
-      console.log('client receive yourColor');
       myColor = color;
-      console.log(myColor);
       document.getElementsByClassName('square')[0].style.backgroundColor = myColor;
     });
 
@@ -33,21 +30,11 @@
       elemTop = canvasElement.offsetTop,
       elements = [];
 
-    // Add event listener for `click` events.
-    // canvasElement.onclick = function (event) {
-    //   console.dir(event);
-    // fill in color
-    // based on previous value, push to backend
-    //
-    // }
-
     //report the mouse position on click
     canvasElement.addEventListener("click", function (evt) {
       var mousePos = getMousePos(canvasElement, evt);
 
       const answer1 = { x: evt.offsetX || evt.layerX, y: evt.offsetY || evt.layerY };
-      console.dir(answer1.x + ', ' + answer1.y);
-      console.log(mousePos.x + ',' + mousePos.y);
       socket.emit('registerPoint', mousePos);
     }, false);
 
@@ -59,21 +46,6 @@
         y: evt.clientY - rect.top
       };
     }
-
-    // // Add element.
-    // elements.push({
-    //   colour: '#05EFFF',
-    //   width: 150,
-    //   height: 100,
-    //   top: 20,
-    //   left: 15
-    // });
-
-    // // Render elements.
-    // elements.forEach(function (element) {
-    //   canvas.fillStyle = element.colour;
-    //   canvas.fillRect(element.left, element.top, element.width, element.height);
-    // });​
 
     /**
      * Draw cells on canvas
@@ -98,9 +70,6 @@
           }
         });
       });
-
-      // setTimeout(function () { update(); }, 70);
-      //window.requestAnimationFrame(update); // Too fast!
     }
   }
 
