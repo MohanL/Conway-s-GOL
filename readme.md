@@ -19,6 +19,7 @@ canvas draw <-- web  <----- socket.io ---> backend -> execute Conway's algo
 - [x] predefined patterns
 - [x] average color
 - [x] heroku pipelin
-- [ ] proper tests, nyc, coverage and coverio
+- [x] proper tests, nyc, coverage and coverio
+  - [ ] travisci
   - [x] color function
-  - [ ] conway algo
+  - [x] conway algo
