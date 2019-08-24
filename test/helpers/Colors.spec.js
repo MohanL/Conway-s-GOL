@@ -2,7 +2,7 @@ const colorHelpers = require('../../helpers/Colors');
 const chai = require('chai');
 
 
-describe('colorhelper tests', () => {
+describe('Colorhelper tests', () => {
   it('function randcolor test should return random color', () => {
     const ranDolor = colorHelpers.randcolor();
     chai.expect(ranDolor.length).to.equal(7);

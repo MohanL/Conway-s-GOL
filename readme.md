@@ -6,6 +6,9 @@ heroku link:https://conwayman.herokuapp.com
 # how to run
 `npm i && npm run start`
 
+# Tests
+`npm run test`
+
 # Architechture Design Explanantion
 
 canvas draw <-- web  <----- socket.io ---> backend -> execute Conway's algo
@@ -16,4 +19,6 @@ canvas draw <-- web  <----- socket.io ---> backend -> execute Conway's algo
 - [x] predefined patterns
 - [x] average color
 - [x] heroku pipelin
-- [ ] proper tests
+- [ ] proper tests, nyc, coverage and coverio
+  - [x] color function
+  - [ ] conway algo
