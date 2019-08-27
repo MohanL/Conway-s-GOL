@@ -23,6 +23,18 @@ module.exports = function () {
   /**
    * Return amount of alive neighbours for a cell
    */
+
+  function addColor(R, G, B, power = false) {
+    if (!power) {
+      colorRSum += R;
+      colorGSum += G;
+      colorBSum += B;
+    } else {
+      colorRSum += Math.pow(R, 2);
+      colorGSum += Math.pow(G, 2);
+      colorBSum += Math.pow(B, 2);
+    }
+  }
   function _countNeighbours(x, y) {
     let amount = 0;
     colorRSum = 0;
@@ -30,122 +42,28 @@ module.exports = function () {
     colorBSum = 0;
 
     function _isFilled(x, y) {
-      return cells[x] && cells[x][y];
+      let filled = cells[x] && cells[x][y];
+      if (filled){
+        if (cells[x][y] === 1) {
+          addColor(R2, G2, B2);
+        } else {
+          let cellR, cellG, cellB;
+          [cellR, cellG, cellB] = hexToRgb(cells[x][y]);
+          addColor(cellR, cellG, cellB, true);
+        }
+        amount++;
+      }
     }
 
-    if (_isFilled(x - 1, y - 1)) {
-      if (cells[x - 1][y - 1] === 1) {
-        colorRSum += R2;
-        colorGSum += G2;
-        colorBSum += B2;
-      } else {
-        let cellR, cellG, cellB;
-        [cellR, cellG, cellB] = hexToRgb(cells[x - 1][y - 1]);
-        colorRSum += Math.pow(cellR, 2);
-        colorGSum += Math.pow(cellG, 2);
-        colorBSum += Math.pow(cellB, 2);
-      }
-      amount++;
-    }
-    if (_isFilled(x, y - 1)) {
-      if (cells[x][y - 1] === 1) {
-        colorRSum += R2;
-        colorGSum += G2;
-        colorBSum += B2;
-      } else {
-        let cellR, cellG, cellB;
-        [cellR, cellG, cellB] = hexToRgb(cells[x][y - 1]);
-        colorRSum += Math.pow(cellR, 2);
-        colorGSum += Math.pow(cellG, 2);
-        colorBSum += Math.pow(cellB, 2);
-      }
-      amount++;
-    }
-    if (_isFilled(x + 1, y - 1)) {
-      if (cells[x + 1][y - 1] === 1) {
-        colorRSum += R2;
-        colorGSum += G2;
-        colorBSum += B2;
-      } else {
-        let cellR, cellG, cellB;
-        [cellR, cellG, cellB] = hexToRgb(cells[x + 1][y - 1]);
-        colorRSum += Math.pow(cellR, 2);
-        colorGSum += Math.pow(cellG, 2);
-        colorBSum += Math.pow(cellB, 2);
-      }
-      amount++;
-    }
-    if (_isFilled(x - 1, y)) {
-      if (cells[x - 1][y] === 1) {
-        colorRSum += R2;
-        colorGSum += G2;
-        colorBSum += B2;
-      } else {
-        let cellR, cellG, cellB;
-        [cellR, cellG, cellB] = hexToRgb(cells[x - 1][y]);
-        colorRSum += Math.pow(cellR, 2);
-        colorGSum += Math.pow(cellG, 2);
-        colorBSum += Math.pow(cellB, 2);
-      }
-      amount++;
-    }
-    if (_isFilled(x + 1, y)) {
-      if (cells[x + 1][y] === 1) {
-        colorRSum += R2;
-        colorGSum += G2;
-        colorBSum += B2;
-      } else {
-        let cellR, cellG, cellB;
-        [cellR, cellG, cellB] = hexToRgb(cells[x + 1][y]);
-        colorRSum += Math.pow(cellR, 2);
-        colorGSum += Math.pow(cellG, 2);
-        colorBSum += Math.pow(cellB, 2);
-      }
-      amount++;
-    }
-    if (_isFilled(x - 1, y + 1)) {
-      if (cells[x - 1][y + 1] === 1) {
-        colorRSum += R2;
-        colorGSum += G2;
-        colorBSum += B2;
-      } else {
-        let cellR, cellG, cellB;
-        [cellR, cellG, cellB] = hexToRgb(cells[x - 1][y + 1]);
-        colorRSum += Math.pow(cellR, 2);
-        colorGSum += Math.pow(cellG, 2);
-        colorBSum += Math.pow(cellB, 2);
-      }
-      amount++;
-    }
-    if (_isFilled(x, y + 1)) {
-      if (cells[x][y + 1] === 1) {
-        colorRSum += R2;
-        colorGSum += G2;
-        colorBSum += B2;
-      } else {
-        let cellR, cellG, cellB;
-        [cellR, cellG, cellB] = hexToRgb(cells[x][y + 1]);
-        colorRSum += Math.pow(cellR, 2);
-        colorGSum += Math.pow(cellG, 2);
-        colorBSum += Math.pow(cellB, 2);
-      }
-      amount++;
-    }
-    if (_isFilled(x + 1, y + 1)) {
-      if (cells[x + 1][y + 1] === 1) {
-        colorRSum += R2;
-        colorGSum += G2;
-        colorBSum += B2;
-      } else {
-        let cellR, cellG, cellB;
-        [cellR, cellG, cellB] = hexToRgb(cells[x + 1][y + 1]);
-        colorRSum += Math.pow(cellR, 2);
-        colorGSum += Math.pow(cellG, 2);
-        colorBSum += Math.pow(cellB, 2);
-      }
-      amount++;
-    }
-
+    _isFilled(x - 1, y - 1);
+    _isFilled(x, y - 1);
+    _isFilled(x+1, y - 1);
+    _isFilled(x - 1, y);
+    _isFilled(x + 1, y);
+    _isFilled(x - 1, y + 1);
+    _isFilled(x, y + 1);
+    _isFilled(x + 1, y + 1);
+    
     return amount;
   }
 
